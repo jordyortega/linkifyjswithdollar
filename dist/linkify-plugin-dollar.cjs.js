@@ -13,7 +13,7 @@ const MentionToken = linkifyjs.createTokenClass('dollar', {
  * Mention parser plugin for linkify
  * @type {import('linkifyjs').Plugin}
  */
-function mention(_ref) {
+function dollar(_ref) {
   let {
     scanner,
     parser
@@ -31,17 +31,17 @@ function mention(_ref) {
   // @
   const At = parser.start.tt(DOLLAR); // @
 
-  // Begin with hyphen (not mention unless contains other characters)
+  // Begin with hyphen (not dollar unless contains other characters)
   const AtHyphen = At.tt(HYPHEN);
   AtHyphen.tt(HYPHEN, AtHyphen);
 
-  // Valid mention (not made up entirely of symbols)
+  // Valid dollar (not made up entirely of symbols)
   const Mention = At.tt(UNDERSCORE, MentionToken);
   At.ta(domain, Mention);
   AtHyphen.tt(UNDERSCORE, Mention);
   AtHyphen.ta(domain, Mention);
 
-  // More valid mentions
+  // More valid dollars
   Mention.ta(domain, Mention);
   Mention.tt(HYPHEN, Mention);
   Mention.tt(UNDERSCORE, Mention);
@@ -49,10 +49,10 @@ function mention(_ref) {
   // Mention with a divider
   const MentionDivider = Mention.tt(SLASH);
 
-  // Once we get a word token, mentions can start up again
+  // Once we get a word token, dollars can start up again
   MentionDivider.ta(domain, Mention);
   MentionDivider.tt(UNDERSCORE, Mention);
   MentionDivider.tt(HYPHEN, Mention);
 }
 
-linkifyjs.registerPlugin('dollar', mention);
+linkifyjs.registerPlugin('dollar', dollar);
